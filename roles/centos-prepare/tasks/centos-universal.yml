@@ -1,0 +1,63 @@
+---
+
+- hostname:
+    name: "{{ inventory_hostname }}"
+
+- service:
+    name: NetworkManager
+    state: stopped
+    enabled: no
+
+- yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - centos-release-openstack-newton
+
+- yum:
+    name: "*"
+    state: latest
+    disablerepo: "epel"
+
+- yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ basic_packages }}"
+
+- yum:
+    name: open-vm-tools
+    state: present
+  when: ansible_product_name == "VMware Virtual Platform"
+
+- replace:
+    dest: /etc/selinux/config
+    regexp: SELINUX=enforcing
+    replace: SELINUX=disabled
+    backup: yes
+
+- lineinfile:
+    dest: /root/.bashrc
+    line: "{{ item }}"
+  with_items:
+    - alias opsconf="grep -v '^$\|^\s*\#' "
+    - source ~/keystonerc_admin
+
+- template:
+    src: centos/hosts.j2
+    dest: /etc/hosts
+    backup: yes
+
+- file:
+    dest: /root/.ssh/
+    owner: root
+    group: root
+    mode: 0700
+    state: directory
+
+- template:
+    src: centos/authorized_keys.j2
+    dest: /root/.ssh/authorized_keys
+    mode: 0600
+    backup: yes

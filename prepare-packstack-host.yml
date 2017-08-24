@@ -1,0 +1,6 @@
+---
+
+- name: prepare centos
+  hosts: "{{ host_group | default('so-ops-newton') }}"
+  roles:
+    - centos-prepare

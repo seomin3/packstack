@@ -1,0 +1,20 @@
+# neutron
+ovs_provider:
+    ether: "ens192"
+    bridge: "br-ens192"
+    address: "172.16.255.5"
+    netmask: "255.255.255.0"
+
+# interface role
+interfaces_ether_interfaces:
+  - device: "{{ ovs_provider.ether }}"
+    bootproto: static
+    address: "{{ ovs_provider.address }}"
+    netmask: "{{ ovs_provider.netmask }}"
+#interfaces_bridge_interfaces:
+#  - device: "{{ ovs_provider.bridge }}"
+#    type: bridge
+#    #address: "{{ ovs_provider.address }}"
+#    #netmask: "{{ ovs_provider.netmask }}"
+#    bootproto: static
+#    ports: ["{{ ovs_provider.ether }}"]
