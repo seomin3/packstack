@@ -1,0 +1,17 @@
+---
+
+- name: reconfigure neutron dhcp agent
+  template:
+    src: neutron/dhcp_agent.ini.j2
+    dest: /etc/neutron/dhcp_agent.ini
+    backup: yes
+  when: "'so-ops-newton-cont' in group_names"
+  notify: restart neutron dhcp agent
+
+- name: reconfigure ml2 config on compute
+  template:
+    src: neutron/openvswitch_agent.ini.j2
+    dest: /etc/neutron/plugins/ml2/openvswitch_agent.ini
+    backup: yes
+  when: "'so-ops-newton-comp' in group_names"
+  notify: restart neutron openvswitch agent

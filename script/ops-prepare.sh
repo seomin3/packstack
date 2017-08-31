@@ -27,7 +27,7 @@ xz -d ${OPS_GLANCE_IMAGE_NAME}
 openstack image create \
 --disk-format 'qcow2' --min-disk '8' \
 --file ${OPS_GLANCE_IMAGE_NAME%%.xz} --public --tag 'centos' \
-${OPS_GLANCE_IMAGE_NAME%%.qcow2.xz}
+${OPS_GLANCE_IMAGE_NAME%%.qcow2}
 
 # nova
 nova flavor-create test auto 512 20 1 --swap 2 --ephemeral 2

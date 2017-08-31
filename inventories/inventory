@@ -15,6 +15,5 @@ so-ops-newton-comp03 ansible_ssh_host=192.168.61.23
 [so-ops-newton:children]
 so-ops-newton-cont
 so-ops-newton-comp
-lab
 [so-ops-newton:vars]
 ansible_user=root

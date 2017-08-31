@@ -1,0 +1,17 @@
+---
+
+- name: incaease nofile
+  pam_limits:
+    domain: "{{ item.user }}"
+    limit_type: '-'
+    limit_item: "{{ item.item }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { user: '*', item: 'nofile', value: '65535' }
+    - { user: '*', item: 'fsize', value: 'unlimited' }
+    - { user: '*', item: 'nproc', value: '64138' }
+
+- name: enable logrotate
+  template:
+    src: mysql/logrotate.j2
+    dest: /etc/logrotate.d/mariadb

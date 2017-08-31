@@ -1,0 +1,6 @@
+---
+
+- name: reconfigure openstack
+  hosts: "{{ host_group | default('so-ops-newton') }}"
+  roles:
+    - openstack-config
