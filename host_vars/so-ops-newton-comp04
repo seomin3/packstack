@@ -1,0 +1,13 @@
+# neutron
+ovs_provider:
+    ether: "eno2"
+    bridge: "br-eno2"
+    address: "172.16.255.24"
+    netmask: "255.255.255.0"
+
+# interface role
+interfaces_ether_interfaces:
+  - device: "{{ ovs_provider.ether }}"
+    bootproto: static
+    address: "{{ ovs_provider.address }}"
+    netmask: "{{ ovs_provider.netmask }}"

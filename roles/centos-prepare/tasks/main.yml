@@ -1,0 +1,7 @@
+---
+
+- include: centos-universal.yml
+- include: openstack-controller.yml
+  when: "'so-ops-newton-cont' in group_names or 'rdo-newton-cont1' == ansible_hostname"
+- include: openstack-compute.yml
+  when: "'so-ops-newton-comp' in group_names"

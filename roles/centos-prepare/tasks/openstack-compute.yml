@@ -1,0 +1,10 @@
+---
+
+- name: enable iommu
+  template:
+    src: centos/grub.j2
+    dest: /etc/default/grub
+    backup: yes
+
+- name: update grub
+  command: grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
