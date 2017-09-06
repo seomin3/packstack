@@ -19,6 +19,7 @@
     name: "*"
     state: latest
     disablerepo: "epel"
+  when: args_yum_update == "yes"
 
 - yum:
     name: "{{ item }}"
@@ -62,6 +63,21 @@
     dest: /root/.ssh/authorized_keys
     mode: 0600
     backup: yes
+
+- user:
+    name: sysop
+    groups: wheel
+    append: yes
+    shell: /bin/bash
+    createhome: yes
+
+- template:
+    src: centos/openrc_sysop.j2
+    dest: /home/sysop/openrc
+
+- lineinfile:
+    dest: /home/sysop/.bashrc
+    line: "source openrc"
 
 - template:
     src: centos/stack.j2

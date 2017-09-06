@@ -17,3 +17,7 @@ so-ops-newton-cont
 so-ops-newton-comp
 [so-ops-newton:vars]
 ansible_user=root
+
+[openstack:children]
+so-ops-newton
+lab
