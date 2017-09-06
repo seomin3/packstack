@@ -11,7 +11,7 @@
     - { user: '*', item: 'fsize', value: 'unlimited' }
     - { user: '*', item: 'nproc', value: '64138' }
 
-- name: enable logrotate
+- name: enable logrotate for mysql
   template:
     src: mysql/logrotate.j2
     dest: /etc/logrotate.d/mariadb
@@ -21,3 +21,16 @@
     src: mysql/openstack.cnf.j2
     dest: /etc/my.cnf.d/openstack.cnf
   notify: restart mysql
+
+- name: enable apache status module
+  template:
+    src: apache/status.conf.j2
+    dest: /etc/httpd/conf.d/status.conf
+  notify: restart apache
+
+- name: enable rabbitmq plugins
+  rabbitmq_plugin:
+    names: '{{ rabbitmq_plugins | join(",") }}'
+    state: enabled
+  notify: restart rabbitmq
+  when: rabbitmq_plugins != []

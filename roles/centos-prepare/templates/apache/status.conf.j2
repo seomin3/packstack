@@ -1,0 +1,7 @@
+LoadModule status_module modules/mod_status.so
+ExtendedStatus on
+<Location "/server-status">
+    SetHandler server-status
+    Require all granted
+    #Require ip 127.0.0.1
+</Location>
