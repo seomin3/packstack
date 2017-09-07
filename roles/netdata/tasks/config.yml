@@ -1,0 +1,33 @@
+---
+
+- name: add rabbitmq user
+  rabbitmq_user:
+    user: "sysop"
+    password: "sysop"
+    vhost: "/"
+    node: 'rabbit@{{ ansible_hostname }}'
+    configure_priv: ".*"
+    read_priv: ".*"
+    write_priv: ".*"
+    tags: "administrator"
+    state: present
+
+- name: configure rabbitmq plugin
+  template:
+    src: rabbitmq.conf.j2
+    dest: /etc/netdata/python.d/rabbitmq.conf
+  notify: restart netdata
+
+- name: add mysql user
+  mysql_user:
+    name: "{{ MYSQL_USER }}"
+    password: "{{ MYSQL_PASS }}"
+    host: "%"
+    priv: "*.*:ALL"
+    state: present
+
+- name: configure mysql plugin
+  template:
+    src: mysql.conf.j2
+    dest: /etc/netdata/python.d/mysql.conf
+  notify: restart netdata

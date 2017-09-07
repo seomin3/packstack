@@ -1,0 +1,16 @@
+---
+
+- name: download install script
+  get_url:
+    url: https://my-netdata.io/kickstart.sh
+    dest: /root/netdata.sh
+    mode: 0700
+
+- command: which netdata
+  register: which_result
+  ignore_errors: yes
+
+- name: install netdata
+  command: bash /root/netdata.sh --non-interactive
+  register: bash_result
+  when: which_result.rc != 0
