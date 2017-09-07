@@ -1,0 +1,5 @@
+---
+
+- include: install.yml
+- include: config.yml
+  when: "'so-ops-newton-cont' in group_names or 'rdo-newton-cont1' == ansible_hostname"

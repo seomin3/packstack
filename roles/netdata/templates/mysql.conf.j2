@@ -1,0 +1,115 @@
+### ansible managed ###
+
+mycnf1:
+  name     : 'local'
+  'my.cnf' : '/etc/my.cnf'
+mycnf2:
+  name     : 'local'
+  'my.cnf' : '/etc/mysql/my.cnf'
+debiancnf:
+  name     : 'local'
+  'my.cnf' : '/etc/mysql/debian.cnf'
+socket1:
+  name     : 'local'
+  socket   : '/var/run/mysqld/mysqld.sock'
+socket2:
+  name     : 'local'
+  socket   : '/var/run/mysqld/mysql.sock'
+socket3:
+  name     : 'local'
+  socket   : '/var/lib/mysql/mysql.sock'
+socket4:
+  name     : 'local'
+  socket   : '/tmp/mysql.sock'
+tcp:
+  name     : 'local'
+  user     : '{{ MYSQL_USER }}'
+  pass     : '{{ MYSQL_PASS }}'
+  host     : 'localhost'
+  port     : '3306'
+tcpipv4:
+  name     : 'local'
+  host     : '127.0.0.1'
+  port     : '3306'
+tcpipv6:
+  name     : 'local'
+  host     : '::1'
+  port     : '3306'
+mycnf1_root:
+  name     : 'local'
+  user     : 'root'
+  'my.cnf' : '/etc/my.cnf'
+mycnf2_root:
+  name     : 'local'
+  user     : 'root'
+  'my.cnf' : '/etc/mysql/my.cnf'
+socket1_root:
+  name     : 'local'
+  user     : 'root'
+  socket   : '/var/run/mysqld/mysqld.sock'
+socket2_root:
+  name     : 'local'
+  user     : 'root'
+  socket   : '/var/run/mysqld/mysql.sock'
+socket3_root:
+  name     : 'local'
+  user     : 'root'
+  socket   : '/var/lib/mysql/mysql.sock'
+socket4_root:
+  name     : 'local'
+  user     : 'root'
+  socket   : '/tmp/mysql.sock'
+tcp_root:
+  name     : 'local'
+  user     : 'root'
+  host     : 'localhost'
+  port     : '3306'
+tcpipv4_root:
+  name     : 'local'
+  user     : 'root'
+  host     : '127.0.0.1'
+  port     : '3306'
+tcpipv6_root:
+  name     : 'local'
+  user     : 'root'
+  host     : '::1'
+  port     : '3306'
+mycnf1_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  'my.cnf' : '/etc/my.cnf'
+mycnf2_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  'my.cnf' : '/etc/mysql/my.cnf'
+socket1_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  socket   : '/var/run/mysqld/mysqld.sock'
+socket2_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  socket   : '/var/run/mysqld/mysql.sock'
+socket3_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  socket   : '/var/lib/mysql/mysql.sock'
+socket4_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  socket   : '/tmp/mysql.sock'
+tcp_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  host     : 'localhost'
+  port     : '3306'
+tcpipv4_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  host     : '127.0.0.1'
+  port     : '3306'
+tcpipv6_netdata:
+  name     : 'local'
+  user     : 'netdata'
+  host     : '::1'
+  port     : '3306'

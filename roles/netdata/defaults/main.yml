@@ -1,0 +1,5 @@
+---
+RABBITMQ_USER: sysop
+RABBITMQ_PASS: sysop
+MYSQL_USER: sysop
+MYSQL_PASS: sysop
