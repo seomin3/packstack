@@ -11,6 +11,9 @@
     - { user: '*', item: 'fsize', value: 'unlimited' }
     - { user: '*', item: 'nproc', value: '64138' }
 
+- name: unlimited open file for mysql
+  command: crudini --set /usr/lib/systemd/system/mariadb.service Service LimitNOFILE infinity
+
 - name: enable logrotate for mysql
   template:
     src: mysql/logrotate.j2
