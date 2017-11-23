@@ -5,9 +5,9 @@ source ~/keystonerc_admin
 # environment
 OPS_INSTANCE_NAME=${1:-sysop-test1}
 OPS_NETWORK=$(openstack network show --column id --format value ${2:-provider1})
-OPS_ZONE=${3:-nova}
-OPS_IMAGE=$(openstack image show --column id --format value ${5:-CentOS-7-1707-custom})
+OPS_ZONE=${3:-DPI-ZONE-A}
 OPS_FLAVOR=$(openstack flavor show --column id --format value ${4:-m1.small})
+OPS_IMAGE=$(openstack image show --column id --format value ${5:-CentOS-7-1707-custom})
 
 nova delete ${OPS_INSTANCE_NAME}
 
