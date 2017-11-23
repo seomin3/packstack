@@ -1,6 +1,9 @@
 ### ansible managed ###
 
 [mysqld]
+slow_query_log = 1
+long_query_time = 3
+slow_query_log_file = /var/log/mariadb/slow.log
 max_connections = 8192
 wait_timeout = 1800
 interactive_timeout = 600

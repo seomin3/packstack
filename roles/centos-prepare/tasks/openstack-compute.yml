@@ -7,4 +7,7 @@
     backup: yes
 
 - name: update grub
-  command: grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+
+- name: fix lvm path
+  command: perl -pi -e 's/cl\//VG01\//g' /boot/grub2/grub.cfg

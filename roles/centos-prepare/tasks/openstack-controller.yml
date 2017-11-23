@@ -19,17 +19,20 @@
     src: mysql/logrotate.j2
     dest: /etc/logrotate.d/mariadb
 
+- name: reload system daemon file
+  command: systemctl daemon-reload
+
 - name: configure mysql
   template:
     src: mysql/openstack.cnf.j2
     dest: /etc/my.cnf.d/openstack.cnf
   notify: restart mysql
 
-- name: enable apache status module
-  template:
-    src: apache/status.conf.j2
-    dest: /etc/httpd/conf.d/status.conf
-  notify: restart apache
+#- name: enable apache status module
+#  template:
+#    src: apache/status.conf.j2
+#    dest: /etc/httpd/conf.d/status.conf
+#  notify: restart apache
 
 - name: enable rabbitmq plugins
   rabbitmq_plugin:
