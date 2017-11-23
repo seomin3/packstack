@@ -25,10 +25,10 @@ Vagrant.configure("2") do |config|
     node.vm.network :private_network, ip: "192.168.30.5"
     node.vm.network :private_network, ip: "172.16.255.5"
     node.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 5120]
+      v.customize ["modifyvm", :id, "--memory", 6144]
       v.customize ["modifyvm", :id, "--cpus", 4]
     end
-    node.vm.provision "shell", :path => 'script/setup.sh', :args => 'master'
+    #node.vm.provision "shell", :path => 'script/setup-with-ruby.sh', :args => 'master'
   end
   # compute
   config.vm.define "packstack-comp" do |node|
@@ -41,4 +41,9 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.provision "file", source: "script/.ssh/", destination: "/tmp/"
+  config.vm.provision "file", source: "script/repo.conf", destination: "/tmp/offline.repo"
+  config.vm.provision "file", source: "script/ans.txt", destination: "~/ans.txt"
+  config.vm.provision "shell", path: "script/post-universal.sh"
+  #config.vm.provision "shell", path: "script/post-offline.sh"
 end

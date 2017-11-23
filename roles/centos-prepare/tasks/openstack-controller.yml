@@ -19,6 +19,9 @@
     src: mysql/logrotate.j2
     dest: /etc/logrotate.d/mariadb
 
+- name: reload system daemon file
+  command: systemctl daemon-reload
+
 - name: configure mysql
   template:
     src: mysql/openstack.cnf.j2

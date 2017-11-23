@@ -19,6 +19,18 @@ openstack role add --user ${OPS_USER} --project admin admin
 openstack role add --user ${OPS_USER} --project demo admin
 openstack user set --password ${OPS_USER} ${OPS_USER}
 
+[ ! -f sysop.osrc ] && cat > ./sysop.osrc <<EOT
+unset OS_SERVICE_TOKEN
+export OS_USERNAME=sysop
+export OS_PASSWORD=sysop
+export OS_AUTH_URL=http://192.168.30.152:5000/v3
+export PS1='[\u@\h \W(sysop)]\$ '
+export OS_PROJECT_NAME=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_IDENTITY_API_VERSION=3
+EOT
+
 # glance
 if [ ! -f ${OPS_GLANCE_IMAGE_NAME} ]; then
   curl -o ${OPS_GLANCE_IMAGE_NAME} ${OPS_GLANCE_IMAGE_URL}/${OPS_GLANCE_IMAGE_NAME}
@@ -27,11 +39,10 @@ xz -d ${OPS_GLANCE_IMAGE_NAME}
 openstack image create \
 --disk-format 'qcow2' --min-disk '8' \
 --file ${OPS_GLANCE_IMAGE_NAME%%.xz} --public --tag 'centos' \
-${OPS_GLANCE_IMAGE_NAME%%.qcow2}
+${OPS_GLANCE_IMAGE_NAME%%.qcow2.xz}
 
 # nova
 nova flavor-create test auto 512 20 1 --swap 2 --ephemeral 2
-openstack keypair create --public-key ~/.ssh/id_rsa.pub stack
 openstack security group rule create \
 --src-ip ${OPS_NOVA_ALLOWED_CIDR} --protocol 'icmp' --ingress \
 ${OPS_NOVA_SECGRP_UUID}
@@ -41,3 +52,6 @@ for port in ${OPS_NOVA_SECGRP_ALLOWD_PORT}; do
   --ingress --project ${OPS_PROJECT_ID} \
   ${OPS_NOVA_SECGRP_UUID}
 done
+
+source sysop.osrc
+openstack keypair create --public-key ~/.ssh/id_rsa.pub stack
