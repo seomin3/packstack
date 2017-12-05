@@ -41,9 +41,11 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.provision "file", source: "script/.ssh/", destination: "/tmp/"
+  config.vm.provision "file", source: ".ssh/", destination: "/tmp/"
   config.vm.provision "file", source: "script/repo.conf", destination: "/tmp/offline.repo"
   config.vm.provision "file", source: "script/ans.txt", destination: "~/ans.txt"
   config.vm.provision "shell", path: "script/post-universal.sh"
+  # if avaliable offline yum repository
   #config.vm.provision "shell", path: "script/post-offline.sh"
+  config.vm.provision "shell", path: "script/packstack.sh"
 end

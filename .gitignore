@@ -1,8 +1,9 @@
 # user defined
 .ftpconfig
 *.txt
-.vagrant/
 *.retry
+.vagrant/
+.ssh/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

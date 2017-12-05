@@ -9,3 +9,5 @@ systemctl disable NetworkManager
 systemctl stop NetworkManager
 systemctl start network
 systemctl stop firewalld
+
+echo "alias opsconf='grep -v '\''^$\|^\s*\#'\'' '" >> /root/.bashrc
