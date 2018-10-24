@@ -3,6 +3,7 @@
 *.txt
 .vagrant/
 *.retry
+script/.ssh/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

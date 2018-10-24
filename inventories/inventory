@@ -4,6 +4,7 @@ rdo-newton-cont1  ansible_ssh_host=192.168.30.5
 rdo-newton-comp1  ansible_ssh_host=192.168.30.6
 [lab:vars]
 ansible_user=root
+ansible_ssh_private_key_file=script/.ssh/id_rsa
 
 # packstack dev environment
 [so-ops-newton-cont]

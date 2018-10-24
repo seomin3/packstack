@@ -1,3 +1,4 @@
+openstack_release: "queens"
 args_yum_update: "no"
 rabbitmq_plugins:
   - rabbitmq_management
