@@ -1,6 +1,5 @@
 # user defined
 .ftpconfig
-*.txt
 .vagrant/
 *.retry
 script/.ssh/

@@ -27,14 +27,28 @@ Vagrant.configure("2") do |config|
     node.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 6144]
       v.customize ["modifyvm", :id, "--cpus", 4]
+      # for Cinder
+      unless File.exist?('./cinder-volumes.vdi')
+        v.customize ['createhd', '--filename', './cinder-volumes.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
+      end
+      v.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', './cinder-volumes.vdi']
     end
-    #node.vm.provision "shell", :path => 'script/setup-with-ruby.sh', :args => 'master'
   end
+
   # compute
-  config.vm.define "packstack-comp" do |node|
-    node.vm.hostname = "packstack-comp"
+  config.vm.define "packstack-comp1" do |node|
+    node.vm.hostname = "packstack-comp1"
     node.vm.network :private_network, ip: "192.168.30.6"
     node.vm.network :private_network, ip: "172.16.255.6"
+    node.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--cpus", 1]
+    end
+  end
+  config.vm.define "packstack-comp2" do |node|
+    node.vm.hostname = "packstack-comp2"
+    node.vm.network :private_network, ip: "192.168.30.7"
+    node.vm.network :private_network, ip: "172.16.255.7"
     node.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--cpus", 1]
