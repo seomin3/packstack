@@ -1,3 +1,0 @@
-[submodule "roles/interfaces"]
-	path = roles/interfaces
-	url = https://github.com/michaelrigart/ansible-role-interfaces.git

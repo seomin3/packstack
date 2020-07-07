@@ -1,6 +1,0 @@
----
-- name: configure network interface
-  hosts: "{{ host_group | default('openstack') }}"
-  roles:
-    - interfaces
-  become: yes

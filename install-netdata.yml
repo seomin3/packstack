@@ -1,6 +1,0 @@
----
-
-- name: install netdata
-  hosts: "{{ host_group | default('so-ops-newton') }}"
-  roles:
-    - netdata

@@ -23,40 +23,44 @@ Vagrant.configure("2") do |config|
     node.vm.hostname = "packstack-cont"
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
     node.vm.network :private_network, ip: "192.168.30.5"
-    node.vm.network :private_network, ip: "172.16.255.5"
     node.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 6144]
+      v.customize ["modifyvm", :id, "--memory", 7168]
       v.customize ["modifyvm", :id, "--cpus", 4]
-      # for Cinder
-      unless File.exist?('./cinder-volumes.vdi')
-        v.customize ['createhd', '--filename', './cinder-volumes.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
-      end
-      v.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', './cinder-volumes.vdi']
+      # block device for Cinder
+#      unless File.exist?('./cinder-volumes.vdi')
+#        v.customize ['createhd', '--filename', './cinder-volumes.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
+#      end
+#      v.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', './cinder-volumes.vdi']
     end
   end
 
   # compute
-  config.vm.define "packstack-comp1" do |node|
-    node.vm.hostname = "packstack-comp1"
+  config.vm.define "packstack-com1" do |node|
+    node.vm.hostname = "packstack-com1"
     node.vm.network :private_network, ip: "192.168.30.6"
-    node.vm.network :private_network, ip: "172.16.255.6"
     node.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
-      v.customize ["modifyvm", :id, "--cpus", 1]
-    end
-  end
-  config.vm.define "packstack-comp2" do |node|
-    node.vm.hostname = "packstack-comp2"
-    node.vm.network :private_network, ip: "192.168.30.7"
-    node.vm.network :private_network, ip: "172.16.255.7"
-    node.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 1024]
-      v.customize ["modifyvm", :id, "--cpus", 1]
+      v.customize ["modifyvm", :id, "--cpus", 2]
     end
   end
 
   config.vm.provision "file", source: "script/.ssh/", destination: "/tmp/"
-  config.vm.provision "file", source: "script/repo.conf", destination: "/tmp/offline.repo"
   config.vm.provision "shell", path: "script/post-universal.sh"
-  #config.vm.provision "shell", path: "script/post-offline.sh"
+  # use offline repositories
+#  config.vm.provision "file", source: "script/repo.conf", destination: "/tmp/offline.repo"
+#  config.vm.provision "shell", path: "script/post-offline.sh"
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/site.yml"
+    ansible.groups = {
+      "controller" => ["packstack-cont"],
+      "compute" => ["packstack-com1"],
+      "openstack:children" => ["controller", "compute"],
+      "openstack:vars" => {
+        "ansible_user" => "root",
+        "ansible_ssh_private_key" => "script/.ssh/id_rsa"
+      }
+    }
+    ansible.become = true
+  end
 end
