@@ -20,11 +20,11 @@ Vagrant.configure("2") do |config|
 
   # controller
   config.vm.define "packstack-cont" do |node|
-    node.vm.hostname = "packstack-cont"
+    node.vm.hostname = "cont"
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
     node.vm.network :private_network, ip: "192.168.30.5"
     node.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 7168]
+      v.customize ["modifyvm", :id, "--memory", 12288]
       v.customize ["modifyvm", :id, "--cpus", 4]
       # block device for Cinder
 #      unless File.exist?('./cinder-volumes.vdi')
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 
   # compute
   config.vm.define "packstack-com1" do |node|
-    node.vm.hostname = "packstack-com1"
+    node.vm.hostname = "com1"
     node.vm.network :private_network, ip: "192.168.30.6"
     node.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
@@ -53,13 +53,16 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "ansible/site.yml"
     ansible.groups = {
-      "controller" => ["packstack-cont"],
-      "compute" => ["packstack-com1"],
-      "openstack:children" => ["controller", "compute"],
+      "ops-cont" => ["packstack-cont"],
+      "ops-comp" => ["packstack-com1"],
+      "openstack:children" => ["ops-cont", "ops-comp"],
       "openstack:vars" => {
         "ansible_user" => "root",
         "ansible_ssh_private_key" => "script/.ssh/id_rsa"
       }
+    }
+    ansible.extra_vars = {
+      cont_hostname: "packstack-cont",
     }
     ansible.become = true
   end
